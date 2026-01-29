@@ -1,3 +1,5 @@
+package ImformationManagementSystem;
+
 import java.util.ArrayList;
 import java.util.Scanner;
 
@@ -10,15 +12,15 @@ public class StudentSystem {
 
         welcome()方法：打印欢迎菜单
 
-        addStu(ArrayList<Student> list, Scanner sc)方法:实现添加学生功能
+        addStu(ArrayList<ImformationManagementSystem.Student> list, Scanner sc)方法:实现添加学生功能
 
-        deleteStu(ArrayList<Student> list, Scanner sc)方法：实现删除学生功能
+        deleteStu(ArrayList<ImformationManagementSystem.Student> list, Scanner sc)方法：实现删除学生功能
 
-        modifyStu(ArrayList<Student> list, Scanner sc)方法：实现修改学生信息功能
+        modifyStu(ArrayList<ImformationManagementSystem.Student> list, Scanner sc)方法：实现修改学生信息功能
 
-        querySingleStu(ArrayList<Student> list, Scanner sc)方法：实现查询单个学生功能
+        querySingleStu(ArrayList<ImformationManagementSystem.Student> list, Scanner sc)方法：实现查询单个学生功能
 
-        queryAllStu(ArrayList<Student> list)方法：实现查询所有学生功能
+        queryAllStu(ArrayList<ImformationManagementSystem.Student> list)方法：实现查询所有学生功能
 
         exitSystem(Scanner sc)方法：实现安全退出系统功能
 
@@ -109,14 +111,9 @@ public class StudentSystem {
          */
         System.out.println("-----------修改学生信息功能------------");
         System.out.println("请输入需要修改的学生的id：");
-        int index = -1;
         String id = sc.next().trim();
-        for(int i = 0; i < list.size(); i++){
-            if(list.get(i).getId().equals(id)){
-                index = i;
-                break;
-            }
-        }
+        int index = getIndex(list,id);
+
         if(index != -1){
             System.out.println("请输入该名学生的新信息：");
 
@@ -163,14 +160,9 @@ public class StudentSystem {
          */
         System.out.println("-----------删除学生功能------------");
         System.out.println("请输入需要删除的学生的id：");
-        int index = -1;
         String id = sc.next().trim();
-        for(int i = 0; i < list.size(); i++){
-            if(list.get(i).getId().equals(id)){
-                index = i;
-                break;
-            }
-        }
+        int index = getIndex(list,id);
+
         if(index != -1){
             list.remove(index);
             System.out.println("删除成功！");
@@ -193,25 +185,15 @@ public class StudentSystem {
 
         String id = "";//  定义一个空字符串来接收学生id
 
-        //  利用死循环直到检索到不存在在集合中的id
-        while(true) {
+
+        while (true) {
             System.out.println("请输入学生Id：");
             id = sc.next().trim();
-            boolean isExists = false;
-
-            for (Student stu : list) {
-                if (stu.getId().equals(id)) {
-                    isExists = true;//  id存在
-                    break;
-                }
-            }
-            //  遍历结束，对布尔值进行判断确认id是否存在
-            if (isExists) {
-                //  id存在重新输入
+            boolean flag = contains(list,id);
+            if(flag){//  存在该id,提示重新输入
                 System.out.println("该ID已存在，请重新输入！");
-            } else {
-                //  不存在则跳出循环
-                break;
+            }else{
+                break;//  不存在则跳出循环
             }
         }
 
@@ -257,6 +239,23 @@ public class StudentSystem {
         System.out.println("学生信息添加成功！");
     }
 
+    private static int getIndex(ArrayList<Student> list, String id){
+        for (int i = 0; i < list.size(); i++) {
+            if(list.get(i).getId().equals(id)){
+                return i;
+            }
+        }
+        return -1;
+    }
+
+    private static boolean contains(ArrayList<Student> list, String id) {
+        for (int i = 0; i < list.size(); i++) {
+                if(list.get(i).getId().equals(id)){
+                    return true;
+                }
+        }
+        return false;
+    }
     private static void welcome() {
         /*
         添加学生信息
